@@ -212,6 +212,35 @@ exports.returnBook = async (req, res) => {
 
 exports.checkMember = async (req, res) => {
   try {
+    const dataMember = await Member.findAll({
+      attributes: [
+        "id",
+        "code",
+        "name",
+        [sequelize.fn("COUNT", sequelize.col("borrow.id")), "borrow_count"],
+      ],
+      include: [
+        {
+          model: Borrow,
+          attributes: [],
+          as: "borrow",
+          on: {
+            col1: sequelize.where(
+              sequelize.col("Member.code"),
+              "=",
+              sequelize.col("borrow.member_code")
+            ),
+          },
+        },
+      ],
+      group: ["Member.id"],
+    });
+
+    if (!dataMember || dataMember.length < 1) {
+      return response.jsonNotFound("Data member not found", res);
+    }
+
+    return response.jsonBerhasil(dataMember, res, "Success get data member");
   } catch (err) {
     console.log("err", err);
     res.status(500).json({
@@ -230,6 +259,19 @@ exports.checkMember = async (req, res) => {
 
 exports.checkBook = async (req, res) => {
   try {
+    const dataBook = await Book.findAll({
+      where: {
+        stock: {
+          [Op.gte]: 1,
+        },
+      },
+    });
+
+    if (!dataBook || dataBook.length < 1) {
+      return response.jsonNotFound("Data book not found", res);
+    }
+
+    return response.jsonBerhasil(dataBook, res, "Success get data book");
   } catch (err) {
     console.log("err", err);
     res.status(500).json({
