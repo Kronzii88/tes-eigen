@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "ezyharofi",
+    "password": null,
+    "database": "tes_eigen",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "ezyharofi",
+    "password": null,
+    "database": "tes_eigen",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "ezyharofi",
+    "password": null,
+    "database": "tes_eigen",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
